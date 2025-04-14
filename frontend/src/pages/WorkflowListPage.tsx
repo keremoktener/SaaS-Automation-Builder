@@ -37,20 +37,17 @@ const WorkflowListPage: React.FC = () => {
             setLoading(true);
             setError(null);
             try {
-                // TODO: Backend endpoint needs to be updated to use authenticated user
-                //       instead of user ID in path. For now, we still need a placeholder ID.
-                //       Ideally, the backend gets the user from the validated token.
-                //       Let's assume user 1 for now, but fetch will include token.
-                const TEMP_USER_ID_FOR_API = 1;
-                const response = await axiosInstance.get<WorkflowDto[]>(`/v1/workflows/user/${TEMP_USER_ID_FOR_API}`);
+                // Use the new endpoint that relies on the authenticated user token
+                const response = await axiosInstance.get<WorkflowDto[]>('/v1/workflows');
                 setWorkflows(response.data);
             } catch (err: any) {
                 console.error("Error fetching workflows:", err);
-                // Check for specific error types if needed
                 if (err.response && err.response.status === 403) {
                     setError("Authentication error. Please try logging in again.");
+                } else if (err.response && err.response.status === 401) { // Handle potential 401 Unauthorized
+                     setError("Unauthorized. Please ensure you are logged in.");
                 } else {
-                    setError("Failed to fetch workflows. Please ensure the backend is running and the user exists.");
+                    setError("Failed to fetch workflows. Please ensure the backend is running.");
                 }
             } finally {
                 setLoading(false);

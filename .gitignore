@@ -1,0 +1,10 @@
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+nbproject/
+
+# Service Account Keys (KEEP SECURE!)
+backend/src/main/resources/*.json 

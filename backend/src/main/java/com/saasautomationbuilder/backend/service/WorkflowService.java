@@ -32,12 +32,9 @@ public class WorkflowService {
                 .collect(Collectors.toList());
     }
 
-    // Temporary: Create workflow for a specific user ID (replace with authenticated user later)
+    // Updated: Create workflow for the provided User object
     @Transactional
-    public WorkflowDto createWorkflow(CreateWorkflowRequestDto requestDto, Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new EntityNotFoundException("User not found with ID: " + userId));
-
+    public WorkflowDto createWorkflow(CreateWorkflowRequestDto requestDto, User user) {
         Workflow workflow = new Workflow();
         workflow.setName(requestDto.getName());
         workflow.setDescription(requestDto.getDescription());
