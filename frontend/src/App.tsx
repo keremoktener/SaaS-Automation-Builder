@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route } from 'react-router-dom';
+import WorkflowListPage from './pages/WorkflowListPage';
+import LoginPage from './pages/LoginPage'; // Import LoginPage
+import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRoute
+import { useAuth } from './context/AuthContext'; // Import useAuth
+import { auth } from './firebaseConfig'; // Import auth for signout
+import { signOut } from 'firebase/auth'; // Import signOut
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { currentUser } = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      // Redirect to login or handle post-signout logic if needed
+      // navigate('/login'); // Requires importing useNavigate
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="min-h-screen bg-gray-100">
+      <nav className="bg-blue-600 p-4 text-white flex justify-between items-center">
+        <h1 className="text-xl font-semibold">SaaS Automation Builder</h1>
+        {currentUser && (
+          <button 
+            onClick={handleSignOut}
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm"
+          >
+            Sign Out
+          </button>
+        )}
+      </nav>
+
+      <main className="p-4">
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<ProtectedRoute />}> {/* Wrap protected routes */} 
+            <Route index element={<WorkflowListPage />} /> {/* Default protected route */} 
+             {/* Add other protected routes here inside ProtectedRoute */}
+          </Route>
+        </Routes>
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
