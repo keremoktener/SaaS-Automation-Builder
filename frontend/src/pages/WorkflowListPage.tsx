@@ -56,17 +56,11 @@ const WorkflowListPage: React.FC = () => {
     // --- Action Handlers ---
 
     const handleCreateWorkflow = () => {
-        // TODO: Navigate to a dedicated create workflow page or open a modal
-        console.log("Navigate to Create Workflow page...");
-        // navigate('/workflows/new'); // Example navigation
-        alert('Create workflow functionality not yet implemented.');
+        navigate('/workflows/new'); // Navigate to create page
     };
 
     const handleEditWorkflow = (workflowId: number) => {
-        // TODO: Navigate to an edit page for this workflow
-        console.log(`Navigate to Edit Workflow page for ID: ${workflowId}`);
-        // navigate(`/workflows/${workflowId}/edit`); // Example navigation
-        alert(`Edit workflow ${workflowId} functionality not yet implemented.`);
+        navigate(`/workflows/${workflowId}/edit`); // Navigate to edit page
     };
 
     const handleDeleteWorkflow = async (workflowId: number) => {
@@ -84,7 +78,7 @@ const WorkflowListPage: React.FC = () => {
             // Option 2: Filter out the deleted workflow locally (faster UI update)
             // setWorkflows(prevWorkflows => prevWorkflows.filter(wf => wf.id !== workflowId));
             
-            alert(`Workflow ${workflowId} deleted successfully.`);
+            // alert(`Workflow ${workflowId} deleted successfully.`); // Alert might be annoying
         } catch (err: any) {
             console.error(`Error deleting workflow ${workflowId}:`, err);
             setError(`Failed to delete workflow ${workflowId}.`);

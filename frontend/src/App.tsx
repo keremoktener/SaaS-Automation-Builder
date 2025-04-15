@@ -5,6 +5,8 @@ import ProtectedRoute from './components/ProtectedRoute'; // Import ProtectedRou
 import { useAuth } from './context/AuthContext'; // Import useAuth
 import { auth } from './firebaseConfig'; // Import auth for signout
 import { signOut } from 'firebase/auth'; // Import signOut
+import CreateWorkflowPage from './pages/CreateWorkflowPage'; // Import Create page
+import EditWorkflowPage from './pages/EditWorkflowPage'; // Import Edit page
 
 function App() {
   const { currentUser } = useAuth();
@@ -38,6 +40,8 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<ProtectedRoute />}> {/* Wrap protected routes */} 
             <Route index element={<WorkflowListPage />} /> {/* Default protected route */} 
+            <Route path="workflows/new" element={<CreateWorkflowPage />} /> {/* Create Route */}
+            <Route path="workflows/:workflowId/edit" element={<EditWorkflowPage />} /> {/* Edit Route */}
              {/* Add other protected routes here inside ProtectedRoute */}
           </Route>
         </Routes>
